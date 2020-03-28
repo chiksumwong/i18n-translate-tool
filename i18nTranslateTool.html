@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <!-- Bootstrap CSS -->
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+      integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+      crossorigin="anonymous"
+    />
+    <title>i18n Translate Tool</title>
+  </head>
+
+  <body>
+    <div id="app">
+      <template>
+        <header>
+          <nav class="navbar navbar-dark bg-dark cont">
+            <div class="container">
+              <a class="navbar-brand" href="#">
+                i18n Translate Tool
+              </a>
+            </div>
+          </nav>
+        </header>
+        <div class="container">
+          <div class="row">
+            <div class="col-sm-6">
+              <div class="mt-3">English Language</div>
+              <div class="card my-3">
+                <textarea rows="10">{{en}}</textarea>
+                <button
+                  type="button"
+                  class="btn btn-primary"
+                  @click="submit_both()"
+                >
+                  Submit TW&CN
+                </button>
+              </div>
+            </div>
+            <div class="col-sm-3">
+              <div class="mt-3">Paste TW Google Translate</div>
+              <div class="card my-3">
+                <textarea rows="10" v-model="t_tw"></textarea>
+                <button
+                  type="button"
+                  class="btn btn-success"
+                  @click="submit_tw()"
+                >
+                  Submit TW
+                </button>
+              </div>
+            </div>
+            <div class="col-sm-3">
+              <div class="mt-3">Paste CN Google Translate</div>
+              <div class="card my-3">
+                <textarea rows="10" v-model="t_cn"></textarea>
+                <button
+                  type="button"
+                  class="btn btn-success"
+                  @click="submit_cn()"
+                >
+                  Submit CN
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-sm-6">
+              <div class="mt-3">TW</div>
+              <div class="card">
+                <textarea rows="10">{{tw}}</textarea>
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="mt-3">CN</div>
+              <div class="card">
+                <textarea rows="10">{{cn}}</textarea>
+              </div>
+            </div>
+          </div>
+        </div>
+        <footer class="bg-dark fixed-bottom">
+          <div class="container">
+            <p class="text-light">Author: Wong Chik Sum @2020</p>
+          </div>
+        </footer>
+      </template>
+    </div>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+      integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+      integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+      integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+
+  <!-- import Vue before Element -->
+  <script src="https://unpkg.com/vue/dist/vue.js"></script>
+
+  <script>
+    var Main = {
+      data() {
+        return {
+          en: {
+            key_en_1: "Value",
+            key_en_2: "Value",
+            key_en_3: "Value"
+          },
+          tw: {
+            key_tw_1: "Value",
+            key_tw_2: "Value",
+            key_tw_3: "Value"
+          },
+          cn: {
+            key_cn_1: "Value",
+            key_cn_2: "Value",
+            key_cn_3: "Value"
+          },
+          t_tw: "",
+          t_tw_array: [],
+          t_cn: "",
+          t_cn_array: []
+        };
+      },
+      methods: {
+        printInputJson() {
+          console.log(
+            "=======================List Json======================="
+          );
+          for (var key in this.en) {
+            if (this.en.hasOwnProperty(key)) {
+              console.log(key + " -> " + this.en[key]);
+            }
+          }
+        },
+        submit_both() {
+          this.submit_tw();
+          this.submit_cn();
+        },
+        submit_tw() {
+          this.t_tw_array = this.t_tw.split("\n");
+          let t_en = JSON.parse(JSON.stringify(this.en));
+          if (this.t_tw_array.length != 1) {
+            // TW
+            let count = 0;
+            for (var element in t_en) {
+              if (count < this.t_tw_array.length) {
+                if (t_en.hasOwnProperty(element)) {
+                  t_en[element] = this.t_tw_array[count];
+                }
+                count++;
+              }
+            }
+            this.tw = t_en;
+          }
+        },
+        submit_cn() {
+          this.t_cn_array = this.t_cn.split("\n");
+          let t_en = JSON.parse(JSON.stringify(this.en));
+          if (this.t_cn_array.length != 1) {
+            //CN
+            count = 0;
+            for (var element in t_en) {
+              if (count < this.t_cn_array.length) {
+                if (t_en.hasOwnProperty(element)) {
+                  t_en[element] = this.t_cn_array[count];
+                }
+                count++;
+              }
+            }
+            this.cn = t_en;
+          }
+        }
+      }
+    };
+    var Ctor = Vue.extend(Main);
+    new Ctor().$mount("#app");
+  </script>
+</html>
