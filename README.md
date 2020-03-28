@@ -1,2 +1,2 @@
-# chiksum.wong-gmail.com
-i18n-translate-tool
+# i18n-translate-tool
+- Download and Open
