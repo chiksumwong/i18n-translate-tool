@@ -44,8 +44,19 @@
                 </button>
               </div>
             </div>
-            <div class="col-sm-3">
-              <div class="mt-3">Paste TW Google Translate</div>
+
+            <div class="col-sm-2">
+              <div class="mt-3">Paste EN</div>
+              <div class="card my-3">
+                <textarea rows="10" v-model="t_en" id="ta_en"></textarea>
+                <button type="button" class="btn btn-info" @click="copy('ta_en')">
+                  copy
+                </button>
+              </div>
+            </div>
+
+            <div class="col-sm-2">
+              <div class="mt-3">Paste TW</div>
               <div class="card my-3">
                 <textarea rows="10" v-model="t_tw"></textarea>
                 <button
@@ -57,8 +68,8 @@
                 </button>
               </div>
             </div>
-            <div class="col-sm-3">
-              <div class="mt-3">Paste CN Google Translate</div>
+            <div class="col-sm-2">
+              <div class="mt-3">Paste CN</div>
               <div class="card my-3">
                 <textarea rows="10" v-model="t_cn"></textarea>
                 <button
@@ -76,13 +87,19 @@
             <div class="col-sm-6">
               <div class="mt-3">TW</div>
               <div class="card">
-                <textarea rows="10">{{tw}}</textarea>
+                <textarea rows="10" id="ta_tw">{{tw}}</textarea>
+                <button type="button" class="btn btn-info" @click="copy('ta_tw')">
+                  copy
+                </button>
               </div>
             </div>
             <div class="col-sm-6">
               <div class="mt-3">CN</div>
               <div class="card">
-                <textarea rows="10">{{cn}}</textarea>
+                <textarea rows="10" id="ta_cn">{{cn}}</textarea>
+                <button type="button" class="btn btn-info" @click="copy('ta_cn')">
+                  copy
+                </button>
               </div>
             </div>
           </div>
@@ -136,6 +153,7 @@
             key_cn_2: "Value",
             key_cn_3: "Value"
           },
+          t_en: "",
           t_tw: "",
           t_tw_array: [],
           t_cn: "",
@@ -159,38 +177,54 @@
         },
         submit_tw() {
           this.t_tw_array = this.t_tw.split("\n");
-          let t_en = JSON.parse(JSON.stringify(this.en));
+          let c_en = JSON.parse(JSON.stringify(this.en));
           if (this.t_tw_array.length != 1) {
             // TW
             let count = 0;
-            for (var element in t_en) {
+            for (var element in c_en) {
               if (count < this.t_tw_array.length) {
-                if (t_en.hasOwnProperty(element)) {
-                  t_en[element] = this.t_tw_array[count];
+                if (c_en.hasOwnProperty(element)) {
+                  c_en[element] = this.t_tw_array[count];
                 }
                 count++;
               }
             }
-            this.tw = t_en;
+            this.tw = c_en;
           }
         },
         submit_cn() {
           this.t_cn_array = this.t_cn.split("\n");
-          let t_en = JSON.parse(JSON.stringify(this.en));
+          let c_en = JSON.parse(JSON.stringify(this.en));
           if (this.t_cn_array.length != 1) {
             //CN
             count = 0;
-            for (var element in t_en) {
+            for (var element in c_en) {
               if (count < this.t_cn_array.length) {
-                if (t_en.hasOwnProperty(element)) {
-                  t_en[element] = this.t_cn_array[count];
+                if (c_en.hasOwnProperty(element)) {
+                  c_en[element] = this.t_cn_array[count];
                 }
                 count++;
               }
             }
-            this.cn = t_en;
+            this.cn = c_en;
           }
+        },
+        loadEN() {
+          for (var key in this.en) {
+            if (this.en.hasOwnProperty(key)) {
+              console.log(key + " -> " + this.en[key]);
+              this.t_en += this.en[key] + "\n";
+            }
+          }
+        },
+        copy(id) {
+          let textarea = document.getElementById(id);
+          textarea.select();
+          document.execCommand("copy");
         }
+      },
+      mounted() {
+        this.loadEN();
       }
     };
     var Ctor = Vue.extend(Main);
